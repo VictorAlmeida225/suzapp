@@ -1,203 +1,188 @@
-import streamlit as st
 import json
-import os
+import streamlit as st
+from pathlib import Path
 from datetime import datetime
 
-st.set_page_config(page_title="Mapa de Praças", page_icon="🗺️", layout="wide")
-st.title("📍 Mapa de Praças")
+DADOS_JSON = Path("dados.json")
+ESTADO_JSON = Path("estado_usuario.json")
 
-JSON_FILE = "pracas.json"
-VISITAS_FILE = "visitas.json"
-
-def campo(valor):
-    if valor is None or valor == "" or valor == " ":
+# -----------------------------
+# Funções utilitárias
+# -----------------------------
+def campo_valido(valor):
+    if valor is None:
         return "-----"
-    return valor
+    valor_str = str(valor).strip()
+    if valor_str == "":
+        return "-----"
+    return valor_str
 
-# Carrega dados
-try:
-    with open(JSON_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
-except FileNotFoundError:
-    st.error(f"Arquivo '{JSON_FILE}' não encontrado!")
+def salvar_estado(estado):
+    with open(ESTADO_JSON, "w", encoding="utf-8") as f:
+        json.dump(estado, f, ensure_ascii=False, indent=2)
+
+def carregar_estado():
+    if ESTADO_JSON.exists():
+        with open(ESTADO_JSON, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+# -----------------------------
+# Carregar dados do JSON
+# -----------------------------
+if not DADOS_JSON.exists():
+    st.error("Arquivo dados.json não encontrado.")
     st.stop()
 
-# Carrega ou inicializa estados
-if os.path.exists(VISITAS_FILE):
-    with open(VISITAS_FILE, "r", encoding="utf-8") as f:
-        visitas = json.load(f)
-else:
-    visitas = {}
+with open(DADOS_JSON, "r", encoding="utf-8") as f:
+    dados_raw = json.load(f)
 
-def gerar_links(coords):
-    if coords == ["-----", "-----"]:
-        return {"Google Maps": "", "Waze": ""}
-    lat, lon = coords
-    return {
-        "Google Maps": f"https://www.google.com/maps/dir/?api=1&destination={lat},{lon}",
-        "Waze": f"https://waze.com/ul?ll={lat},{lon}&navigate=yes"
-    }
+# -----------------------------
+# Normalizar dados
+# -----------------------------
+def normalizar_dados(dados_raw):
+    dados_norm = []
+    for f in dados_raw:
+        prop = f.get("properties", {})
+        geo = f.get("geometry", {})
 
-def salvar_visitas():
-    with open(VISITAS_FILE, "w", encoding="utf-8") as f:
-        json.dump(visitas, f, ensure_ascii=False, indent=4)
+        den_oficia = campo_valido(prop.get("den_oficia", ""))
+        apelido = campo_valido(prop.get("apelido", ""))
+        nome = den_oficia if den_oficia != "-----" else apelido if apelido != "-----" else "-----"
+
+        endereco = campo_valido(prop.get("endereco", ""))
+        bairro = campo_valido(prop.get("bairro", ""))
+        loteamento = campo_valido(prop.get("loteamento", ""))
+        area = campo_valido(prop.get("m2", ""))
+
+        coords = geo.get("coordinates", [])
+        if len(coords) == 2:
+            x, y = coords
+            lat, lon = y, x
+        else:
+            lat = lon = None
+
+        dados_norm.append({
+            "nome": nome,
+            "endereco": endereco,
+            "bairro": bairro,
+            "loteamento": loteamento,
+            "area": area,
+            "lat": lat,
+            "lon": lon
+        })
+    return dados_norm
+
+dados = normalizar_dados(dados_raw)
+
+# -----------------------------
+# Inicializar estado do usuário
+# -----------------------------
+estado_usuario_list = carregar_estado()
+estado_usuario = {x["nome"]: x for x in estado_usuario_list}
 
 # -----------------------------
 # Sidebar
 # -----------------------------
-st.sidebar.header("Filtros de exibição")
-if st.sidebar.button("🗑️ Limpar seleções"):
-    for i in range(len(data)):
-        key_base = f"praça_{i}"
-        visitas[f"{key_base}_visitado"] = False
-        visitas[f"{key_base}_timestamp"] = None
-        visitas[f"{key_base}_academia"] = False
-        visitas[f"{key_base}_quadra"] = False
-        visitas[f"{key_base}_parquinho"] = False
-        visitas[f"{key_base}_sem_nada"] = False
-    salvar_visitas()
-    params = st.query_params
-    params["reload"] = str(int(params.get("reload", ["0"])[0]) ^ 1)
-    st.query_params = params
+st.sidebar.header("⚙️ Filtros e Ações")
+filtro_nome = st.sidebar.text_input("🔎 Buscar pelo nome")
 
-filtro_visita = st.sidebar.selectbox("Mostrar praças:", ["Todas", "Visitadas", "Não visitadas"])
-filtro_academia = st.sidebar.checkbox("Academia", value=False)
-filtro_quadra = st.sidebar.checkbox("Quadra/Campo", value=False)
-filtro_parquinho = st.sidebar.checkbox("Parquinho de criança", value=False)
-filtro_sem_nada = st.sidebar.checkbox("Sem nada!", value=False)
+if st.sidebar.button("🧹 Limpar tudo"):
+    # Limpa o JSON do usuário
+    estado_usuario = {}
+    salvar_estado([])
+    
+    # Limpa todas as chaves de session_state relacionadas às checkboxes
+    for key in list(st.session_state.keys()):
+        if key.startswith(("jv_", "quadra_", "parquinho_", "academia_", "semnada_")):
+            del st.session_state[key]
+    
+    # Recarrega a página para refletir
+    st.experimental_rerun = True
 
 # -----------------------------
-# Ordenação por timestamp
+# Ordenar dados por timestamp JV
 # -----------------------------
-for i in range(len(data)):
-    key_base = f"praça_{i}"
-    if f"{key_base}_timestamp" not in visitas:
-        visitas[f"{key_base}_timestamp"] = None
+def ordenar_dados(dados, estado_usuario):
+    visitados = [p for p in dados if p["nome"] in estado_usuario and estado_usuario[p["nome"]].get("timestamp")]
+    visitados.sort(key=lambda x: estado_usuario[x["nome"]]["timestamp"])
+    nao_visitados = [p for p in dados if p["nome"] not in estado_usuario or not estado_usuario[p["nome"]].get("timestamp")]
+    return visitados + nao_visitados
 
-def get_timestamp(i):
-    ts = visitas.get(f"praça_{i}_timestamp")
-    if ts:
-        return datetime.fromisoformat(ts)
-    else:
-        return datetime.max
-
-indices_ordenados = sorted(range(len(data)), key=get_timestamp)
-
-def filtrar_pracas(i):
-    key_base = f"praça_{i}"
-    visitado_val = visitas.get(f"{key_base}_visitado", False)
-    academia_val = visitas.get(f"{key_base}_academia", False)
-    quadra_val = visitas.get(f"{key_base}_quadra", False)
-    parquinho_val = visitas.get(f"{key_base}_parquinho", False)
-    sem_nada_val = visitas.get(f"{key_base}_sem_nada", False)
-
-    if filtro_visita == "Visitadas" and not visitado_val:
-        return False
-    if filtro_visita == "Não visitadas" and visitado_val:
-        return False
-
-    if filtro_academia and not academia_val:
-        return False
-    if filtro_quadra and not quadra_val:
-        return False
-    if filtro_parquinho and not parquinho_val:
-        return False
-    if filtro_sem_nada and not sem_nada_val:
-        return False
-
-    return True
-
-indices_exibir = [i for i in indices_ordenados if filtrar_pracas(i)]
-total_exibir = len(indices_exibir)
-total_pracas = len(data)
-
-st.subheader(f"Total de praças: {total_pracas} | Mostrando: {total_exibir}")
+dados_ordenados = ordenar_dados(dados, estado_usuario)
 
 # -----------------------------
-# Cards das praças
+# Loop principal
 # -----------------------------
-for i in indices_exibir:
-    feature = data[i]
-    props = feature.get("properties", {})
-    coords = feature.get("geometry", {}).get("coordinates", ["-----","-----"])
-    coords = [campo(coords[0]), campo(coords[1])] if coords else ["-----","-----"]
-    links = gerar_links(coords)
+for p in dados_ordenados:
+    nome = p["nome"]
+    lat, lon = p["lat"], p["lon"]
 
-    key_base = f"praça_{i}"
-    visitado_val = visitas.get(f"{key_base}_visitado", False)
+    estado = estado_usuario.get(nome, {})
+    visitado = estado.get("jv", False)
+    quadra = estado.get("quadra", False)
+    parquinho = estado.get("parquinho", False)
+    academia = estado.get("academia", False)
+    semnada = estado.get("semnada", False)
+    timestamp = estado.get("timestamp", None)
+
+    # Número de visita
+    visitados = [x for x in estado_usuario.values() if x.get("timestamp")]
+    visitados.sort(key=lambda x: x["timestamp"])
+    ordem = next((i+1 for i,x in enumerate(visitados) if x["nome"]==nome), None)
+    label_nome = f"{ordem}. {nome}" if ordem else nome
 
     with st.container():
-        # Enumeração
-        if visitado_val:
-            numero = sorted(
-                [(idx, visitas[f"praça_{idx}_timestamp"]) for idx in range(len(data)) if visitas.get(f"praça_{idx}_visitado")],
-                key=lambda x: datetime.fromisoformat(x[1])
-            ).index((i, visitas[f"{key_base}_timestamp"])) + 1
-            titulo = f"{numero}. {campo(props.get('den_oficia'))}"
+        st.subheader(label_nome)
+        st.write(f"📍 Endereço: {p['endereco']}")
+        st.write(f"🏘️ Bairro: {p['bairro']} | 🗺️ Loteamento: {p['loteamento']}")
+        st.write(f"📏 Área: {p['area']} m²")
+
+        if lat and lon:
+            maps_url = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
+            waze_url = f"https://waze.com/ul?ll={lat},{lon}&navigate=yes"
+            st.markdown(f"[🗺️ Google Maps]({maps_url}) | 🌎 [Waze]({waze_url})")
         else:
-            titulo = campo(props.get('den_oficia'))
-        st.markdown(f"### {titulo}")
+            st.write("Coordenadas não disponíveis.")
 
-        st.write(f"**Endereço:** {campo(props.get('endereco'))}")
-        st.write(f"**Bairro:** {campo(props.get('bairro'))}")
-        st.write(f"**Loteamento:** {campo(props.get('loteamento'))}")
-        st.write(f"**Área (m²):** {campo(props.get('m2'))}")
-        st.write(f"**Esporte:** {'Sim' if campo(props.get('esporte')).lower() in ['sim','true','1'] else 'Não'}")
-
-        col1, col2 = st.columns([1,2])
-        with col1:
-            # Já visitado
-            visitado = st.checkbox("✅ Já visitado", value=visitado_val, key=f"{key_base}_visitado")
-
-            # Timestamp
-            if visitado and not visitado_val:
-                visitas[f"{key_base}_timestamp"] = datetime.now().isoformat()
-            elif not visitado:
-                visitas[f"{key_base}_timestamp"] = None
-                visitas[f"{key_base}_academia"] = False
-                visitas[f"{key_base}_quadra"] = False
-                visitas[f"{key_base}_parquinho"] = False
-                visitas[f"{key_base}_sem_nada"] = False
-
-            # Checkbox Sem nada! primeiro para pegar valor atual
-            sem_nada = st.checkbox("❌ Sem nada!", value=visitas.get(f"{key_base}_sem_nada", False), key=f"{key_base}_sem_nada", disabled=not visitado)
-
-            # Outras checkboxes desabilitadas se JV não marcado ou sem_nada marcado
-            disabled_others = not visitado or sem_nada
-
-            academia = st.checkbox("🏋️ Academia", value=visitas.get(f"{key_base}_academia", False),
-                                   key=f"{key_base}_academia", disabled=disabled_others)
-            quadra = st.checkbox("🏟️ Quadra/Campo", value=visitas.get(f"{key_base}_quadra", False),
-                                 key=f"{key_base}_quadra", disabled=disabled_others)
-            parquinho = st.checkbox("🎡 Parquinho de criança", value=visitas.get(f"{key_base}_parquinho", False),
-                                    key=f"{key_base}_parquinho", disabled=disabled_others)
-
-            # Se sem_nada marcado, limpa as outras
-            if sem_nada:
-                academia = False
-                quadra = False
-                parquinho = False
-
-            # Atualiza estado
-            visitas[f"{key_base}_visitado"] = visitado
-            visitas[f"{key_base}_academia"] = academia
-            visitas[f"{key_base}_quadra"] = quadra
-            visitas[f"{key_base}_parquinho"] = parquinho
-            visitas[f"{key_base}_sem_nada"] = sem_nada
-
-            salvar_visitas()
-
-        with col2:
-            if links["Google Maps"]:
-                st.markdown(f"[🗺️ Google Maps]({links['Google Maps']})  ")
-                st.markdown(f"[🌎 Waze]({links['Waze']})")
+        # JV
+        jv_checked = st.checkbox("✅ Já visitado", value=visitado, key=f"jv_{nome}")
+        if jv_checked != visitado:
+            if jv_checked:
+                estado_usuario[nome] = {"nome": nome, "jv": True, "timestamp": datetime.now().timestamp(),
+                                        "quadra": False, "parquinho": False, "academia": False, "semnada": False}
             else:
-                st.write("📍 Coordenadas não disponíveis")
+                estado_usuario[nome]["jv"] = False
+                estado_usuario[nome]["timestamp"] = None
+                estado_usuario[nome]["quadra"] = False
+                estado_usuario[nome]["parquinho"] = False
+                estado_usuario[nome]["academia"] = False
+                estado_usuario[nome]["semnada"] = False
+            salvar_estado(list(estado_usuario.values()))
+            st.experimental_rerun = True  # marca para atualizar
 
-        st.markdown("---")
+        # Sem nada
+        semnada_checked = st.checkbox("🚫 Sem nada", value=semnada, key=f"semnada_{nome}", disabled=not jv_checked)
+        if semnada_checked != semnada:
+            estado_usuario[nome]["semnada"] = semnada_checked
+            if semnada_checked:
+                estado_usuario[nome]["quadra"] = False
+                estado_usuario[nome]["parquinho"] = False
+                estado_usuario[nome]["academia"] = False
+            salvar_estado(list(estado_usuario.values()))
+            st.experimental_rerun = True
 
-# -----------------------------
-# Contador final
-# -----------------------------
-total_visitadas = sum(visitas.get(f"praça_{i}_visitado", False) for i in range(total_pracas))
-st.info(f"✅ Total visitadas: {total_visitadas} | Ainda faltam: {total_pracas - total_visitadas}")
+        disabled_others = semnada or not jv_checked
+        quadra_checked = st.checkbox("🏀 Quadra/Campo", value=quadra, key=f"quadra_{nome}", disabled=disabled_others)
+        parquinho_checked = st.checkbox("🎡 Parquinho", value=parquinho, key=f"parquinho_{nome}", disabled=disabled_others)
+        academia_checked = st.checkbox("🏋️ Academia", value=academia, key=f"academia_{nome}", disabled=disabled_others)
+
+        if quadra_checked != quadra:
+            estado_usuario[nome]["quadra"] = quadra_checked
+            salvar_estado(list(estado_usuario.values()))
+        if parquinho_checked != parquinho:
+            estado_usuario[nome]["parquinho"] = parquinho_checked
+            salvar_estado(list(estado_usuario.values()))
+        if academia_checked != academia:
+            estado_usuario[nome]["academia"] = academia_checked
+            salvar_estado(list(estado_usuario.values()))

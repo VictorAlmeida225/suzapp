@@ -1,0 +1,211 @@
+[
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Ivo Miguel da Silva",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Praça dos Minions\n",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 1239.064
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5608725549802,
+        -46.2918814815197
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Cacilda de Jesus de Sousa",
+      "endereco": "Rua Laercio Veloso da Cruz Gouveia",
+      "lei_dec_of": "3947/2004",
+      "link": "https://drive.google.com/file/d/1F0kSVvUKQFCcoI4iN4kaV3EHxDUxKvl9/view?usp=sharing",
+      "apelido": " ",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 4315.488
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5595561109092,
+        -46.2941399890959
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Comunitária Luis Inácio do Nascimento",
+      "endereco": "Rua Manoel Barbosa, Rua Antonio José",
+      "lei_dec_of": "3991/2005",
+      "link": "https://drive.google.com/file/d/1AJdd9SjeuyjQVdTPlYt8UYiEya1BCvm9/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Casa Branca",
+      "loteamento": "Vila Barros",
+      "m2": 151.236
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5732033932986,
+        -46.336493021502
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Wilson Manoel de Oliveira",
+      "endereco": "Rua João Martins da Silva, Rua Oswaldo de Oliveira Lima",
+      "lei_dec_of": "3950/2004",
+      "link": "https://drive.google.com/file/d/1ruQVfgKvwk1UeKbrfBiP6lV9G2B7JjAD/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Casa Branca",
+      "loteamento": "Parque Residencial Casa Branca",
+      "m2": 2018.739
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5661697854655,
+        -46.3352327307139
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Oswaldo de Oliveira Lima",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Academia Rua Oswaldo\n",
+      "bairro": "Casa Branca",
+      "loteamento": "Parque Residencial Casa Branca",
+      "m2": 1071.49
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5642405078727,
+        -46.3349020757723
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Adenir Justino Gonçalves Junior",
+      "endereco": "Rua Ramal São José",
+      "lei_dec_of": "4714/2013",
+      "link": "https://drive.google.com/file/d/1Ygaot8kQeiGU0L3qWnhI-Nnx9ZcApUZn/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Casa Branca",
+      "loteamento": " ",
+      "m2": 3880.599
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5657250392426,
+        -46.3392761687993
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Roberto dos Santos, Rua Tereza Haguihara Cardoso",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Praça Paróquia Casa Branca",
+      "bairro": "Casa Branca",
+      "loteamento": "Jardim Casa Branca",
+      "m2": 2249.867
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5623380869522,
+        -46.3327644728184
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Valdemiro Neves Barbosa",
+      "endereco": "Avenida Manoel Casanova, Rua Eduardo Carlos Ramos",
+      "lei_dec_of": "3897/2004",
+      "link": "https://drive.google.com/file/d/1xhbXz2wE01-NENmGgxuTkjuP4YP0yy11/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Jardim das Flores",
+      "loteamento": "Jardim das Flores",
+      "m2": 688.045
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5673950254422,
+        -46.3222499068534
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Higino Emídio Sotero dos Santos",
+      "endereco": "Rua das Chacaras, Rua Santa Cruz",
+      "lei_dec_of": "3905/2004",
+      "link": "https://drive.google.com/file/d/1sfLdcfORGu3yI0t_d0ejGi2VaiJ3KWV_/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Jardim das Flores",
+      "loteamento": "Cidade Edson",
+      "m2": 358.414
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5631876699153,
+        -46.3135478442064
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Masaru Tanikava",
+      "endereco": "Rua Ignácio Garcia, Jardim Suzano",
+      "lei_dec_of": "5552/2024",
+      "link": "https://drive.google.com/file/d/1ybXez2HGZp6ly2gJWXGpcetwvOF9M6rd/view?usp=sharing",
+      "apelido": "Masaru Tanikawa (SENAI)\n",
+      "bairro": "Jardim das Flores",
+      "loteamento": "Jardim Suzano",
+      "m2": 655.199
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5579942608298,
+        -46.3143646056281
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça São Paulo",
+      "endereco": "Rua Bahe Macedo, Rua Lobato, Rua Rachid, Rua Santa Isabel",
+      "lei_dec_of": "Conforme planta de loteamento aprovada",
+      "link": "https://drive.google.com/file/d/1u8oENMdF0sC--5xKtnBEDezwutWkxrKp/view?usp=sharing",
+      "apelido": " ",
+      "bairro": "Jardim das Flores",
+      "loteamento": "Cidade Edson",
+      "m2": 6922.719
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5579686052771,
+        -46.3113647674211
+      ]
+    }
+  }
+]

@@ -1,57 +1,71 @@
 import json
+from pathlib import Path
 
-input_file = "pracas_implantadas.geojson"
-output_file = "pracas.json"
+# Nome do arquivo de entrada/saída
+entrada = Path("pracas_implantadas.geojson")
+saida = Path("pracas.json")
 
-# Ordem desejada dos campos (excluindo 'saude')
-ordem_properties = [
-    "den_oficia", "endereco", "lei_dec_of", "link",
-    "apelido", "bairro", "loteamento", "esporte", "m2"
+# Campos que queremos manter
+CAMPOS_PERMITIDOS = [
+    "den_oficia",
+    "endereco",
+    "lei_dec_of",
+    "link",
+    "apelido",
+    "bairro",
+    "loteamento",
+    "m2"
 ]
 
-def tratar_feature(feature):
-    props = feature.get("properties", {})
-    # Mantém apenas os campos desejados e na ordem definida
-    properties = {k: props.get(k, "-----") for k in ordem_properties}
+def safe(value):
+    """Converte valores vazios em -----"""
+    if value in (None, "", [], {}):
+        return "-----"
+    return value
 
-    # Mantém geometry com coordinates invertidos
-    geometry = feature.get("geometry", {})
-    coords = geometry.get("coordinates", None)
-    if coords and isinstance(coords, list) and len(coords) >= 2:
-        geometry_tratada = {"coordinates": [coords[1], coords[0]]}
-    else:
-        geometry_tratada = {"coordinates": ["-----", "-----"]}
+def processar_geojson():
+    with open(entrada, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-    # Combina properties e geometry
-    feature_tratada = {
-        "properties": properties,
-        "geometry": geometry_tratada
-    }
+    novas_features = []
+    vistos = set()  # para evitar duplicados
 
-    return feature_tratada
+    for feat in data.get("features", []):
+        props = feat.get("properties", {})
+        geom = feat.get("geometry", {})
 
-# Leitura do arquivo geojson
-with open(input_file, "r", encoding="utf-8") as f:
-    data = json.load(f)
+        # Seleciona apenas os campos permitidos
+        new_props = {}
+        for campo in CAMPOS_PERMITIDOS:
+            new_props[campo] = safe(props.get(campo))
 
-# Processa todas as features
-features_tratadas = [tratar_feature(f) for f in data.get("features", [])]
+        # Geometry apenas coordinates invertidos
+        coords = geom.get("coordinates", None)
+        if coords and len(coords) == 2:
+            yx = [coords[1], coords[0]]  # inverte x,y -> y,x
+        else:
+            yx = ["-----", "-----"]
 
-# Função para mesclar duplicados
-def mesclar_duplicados(features):
-    vistos = []
-    unicos = []
-    for f in features_tratadas:
-        chave = json.dumps(f, sort_keys=True)  # converte feature em string para comparação
-        if chave not in vistos:
-            vistos.append(chave)
-            unicos.append(f)
-    return unicos
+        new_geom = {
+            "type": "Point",
+            "coordinates": yx
+        }
 
-features_unicas = mesclar_duplicados(features_tratadas)
+        # Para evitar duplicados, criamos uma chave única das properties
+        chave = tuple(new_props.items()) + tuple(yx)
+        if chave in vistos:
+            continue
+        vistos.add(chave)
 
-# Salva o resultado final
-with open(output_file, "w", encoding="utf-8") as f:
-    json.dump(features_unicas, f, ensure_ascii=False, indent=4)
+        novas_features.append({
+            "properties": new_props,
+            "geometry": new_geom
+        })
 
-print(f"Arquivo tratado salvo em: {output_file}")
+    with open(saida, "w", encoding="utf-8") as f:
+        json.dump(novas_features, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ {len(novas_features)} registros processados e salvos em {saida}")
+
+if __name__ == "__main__":
+    processar_geojson()
