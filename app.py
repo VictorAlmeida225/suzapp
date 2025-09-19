@@ -58,7 +58,7 @@ def normalizar_dados(dados_raw):
         coords = geo.get("coordinates", [])
         if len(coords) == 2:
             x, y = coords
-            lat, lon = y, x
+            lat, lon = x, y
         else:
             lat = lon = None
 
@@ -138,13 +138,6 @@ for p in dados_ordenados:
         st.write(f"🏘️ Bairro: {p['bairro']} | 🗺️ Loteamento: {p['loteamento']}")
         st.write(f"📏 Área: {p['area']} m²")
 
-        if lat and lon:
-            maps_url = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
-            waze_url = f"https://waze.com/ul?ll={lat},{lon}&navigate=yes"
-            st.markdown(f"[🗺️ Google Maps]({maps_url}) | 🌎 [Waze]({waze_url})")
-        else:
-            st.write("Coordenadas não disponíveis.")
-
         # JV
         jv_checked = st.checkbox("✅ Já visitado", value=visitado, key=f"jv_{nome}")
         if jv_checked != visitado:
@@ -186,3 +179,10 @@ for p in dados_ordenados:
         if academia_checked != academia:
             estado_usuario[nome]["academia"] = academia_checked
             salvar_estado(list(estado_usuario.values()))
+
+        if lat and lon:
+            maps_url = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
+            waze_url = f"https://waze.com/ul?ll={lat},{lon}&navigate=yes"
+            st.markdown(f"[🗺️ Google Maps]({maps_url}) | 🌎 [Waze]({waze_url})")
+        else:
+            st.write("Coordenadas não disponíveis.")
