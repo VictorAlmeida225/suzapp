@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "nome": "Praça dos Minions",
+    "jv": true,
+    "timestamp": 1759174095.460384,
+    "quadra": true,
+    "parquinho": false,
+    "academia": false,
+    "semnada": false
+  },
+  {
+    "nome": "Praça Adenir Justino Gonçalves Junior",
+    "jv": true,
+    "timestamp": 1759174100.487332,
+    "quadra": false,
+    "parquinho": true,
+    "academia": false,
+    "semnada": false
+  },
+  {
+    "nome": "Academia Rua Oswaldo",
+    "jv": true,
+    "timestamp": 1759174103.809252,
+    "quadra": true,
+    "parquinho": false,
+    "academia": false,
+    "semnada": false
+  },
+  {
+    "nome": "Praça Comunitária Luis Inácio do Nascimento",
+    "jv": true,
+    "timestamp": 1759174111.839811,
+    "quadra": true,
+    "parquinho": false,
+    "academia": false,
+    "semnada": false
+  },
+  {
+    "nome": "Rua Tadeu x Biotônico",
+    "jv": true,
+    "timestamp": 1759174116.652529,
+    "quadra": false,
+    "parquinho": false,
+    "academia": false,
+    "semnada": true
+  }
+]

@@ -1,0 +1,154 @@
+[
+  {
+    "properties": {
+      "den_oficia": "Praça da Bíblia",
+      "endereco": "Rua Ruth, Rua Profesor Geremias, Rua Yamamoto",
+      "lei_dec_of": "1654/1978",
+      "link": "https://drive.google.com/file/d/1vMEf6rizctrhkfg0OQoWk6sjnnncG3Zk/view?usp=drive_link",
+      "apelido": " ",
+      "bairro": "Vila Amorim",
+      "loteamento": "Vila Urupês",
+      "m2": 1705.297
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5439558537258,
+        -46.2957288816946
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Thadeu José de Moraes, Rua Biotonico",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Rua Tadeu x Biotônico \n",
+      "bairro": "Vila Amorim",
+      "loteamento": "Vila Urupês",
+      "m2": 1232.536
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5473316416879,
+        -46.2917439493553
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Urupês",
+      "endereco": "Rua Caboclos, Rua Esphinges",
+      "lei_dec_of": "5105/2017",
+      "link": "https://drive.google.com/file/d/15XMZ0NvXankidkYgazQM9IkKUktA6zW9/view?usp=sharing",
+      "apelido": "Vila Urupês\n",
+      "bairro": "Vila Amorim",
+      "loteamento": "Vila Urupês",
+      "m2": 876.273
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5499286303543,
+        -46.2889631086432
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Ivo Miguel da Silva",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Praça dos Minions\n",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 1239.064
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5608725549802,
+        -46.2918814815197
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Benedita Cruz do Prado",
+      "endereco": "Rua Cacique, Rua Catarina Parente, Rua Benedita sa Silva Pereira",
+      "lei_dec_of": "3931/2004",
+      "link": "https://drive.google.com/file/d/1nDPYLd3_5YtV_nS7VGlcFxK7EvSNFZdN/view?usp=sharing",
+      "apelido": "Benedita Cruz do Prado (vans)\n",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 4596.141
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5559580756468,
+        -46.294753204749
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Lydia Josefa Souza",
+      "endereco": "Rua Domingos Victorino, Rua Biotônico",
+      "lei_dec_of": "4541/2011",
+      "link": "https://drive.google.com/file/d/1IoS2zOyQ8lT5QdDjvaEhlj3JQuwpgIra/view?usp=drive_link",
+      "apelido": "Lydia Josefa souza\n",
+      "bairro": "Colorado",
+      "loteamento": "Jardim Cacique",
+      "m2": 2927.052
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5533165934385,
+        -46.2923240166775
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": "Praça Cacilda de Jesus de Sousa",
+      "endereco": "Rua Laercio Veloso da Cruz Gouveia",
+      "lei_dec_of": "3947/2004",
+      "link": "https://drive.google.com/file/d/1F0kSVvUKQFCcoI4iN4kaV3EHxDUxKvl9/view?usp=sharing",
+      "apelido": " ",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 4315.488
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5595561109092,
+        -46.2941399890959
+      ]
+    }
+  },
+  {
+    "properties": {
+      "den_oficia": " ",
+      "endereco": "Rua Rio Grande do Norte",
+      "lei_dec_of": " ",
+      "link": " ",
+      "apelido": "Praça Rio Grande do Norte",
+      "bairro": "Colorado",
+      "loteamento": "Vila Colorado",
+      "m2": 840.68
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.5528252712017,
+        -46.2964178111611
+      ]
+    }
+  }
+]

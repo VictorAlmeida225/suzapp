@@ -1,0 +1,102 @@
+{
+    "leagues": [
+        {
+            "league_id": 1,
+            "league_name": "Premier League",
+            "country": "England",
+            "logo": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg"
+        },
+        {
+            "league_id": 2,
+            "league_name": "Ligue 1",
+            "country": "France",
+            "logo": "https://upload.wikimedia.org/wikipedia/en/a/aa/Ligue1.svg"
+        },
+        {
+            "league_id": 3,
+            "league_name": "Serie A",
+            "country": "Italy",
+            "logo": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg"
+        }
+    ],
+    "teams": [
+        {
+            "team_id": 101,
+            "team_name": "Manchester United",
+            "league_id": 1,
+            "logo": ""
+        },
+        {
+            "team_id": 102,
+            "team_name": "Liverpool",
+            "league_id": 1,
+            "logo": ""
+        },
+        {
+            "team_id": 201,
+            "team_name": "PSG",
+            "league_id": 2,
+            "logo": ""
+        },
+        {
+            "team_id": 202,
+            "team_name": "Marseille",
+            "league_id": 2,
+            "logo": ""
+        },
+        {
+            "team_id": 301,
+            "team_name": "Juventus",
+            "league_id": 3,
+            "logo": ""
+        },
+        {
+            "team_id": 302,
+            "team_name": "Inter",
+            "league_id": 3,
+            "logo": ""
+        }
+    ],
+    "players": [
+        {
+            "name": "Cristiano Ronaldo",
+            "age": 38,
+            "number": 7,
+            "nationality": "Portugal",
+            "position": "Forward",
+            "team_id": 301
+        },
+        {
+            "name": "Paul Pogba",
+            "age": 30,
+            "number": 6,
+            "nationality": "France",
+            "position": "Midfielder",
+            "team_id": 101
+        },
+        {
+            "name": "Kylian Mbappé",
+            "age": 25,
+            "number": 7,
+            "nationality": "France",
+            "position": "Forward",
+            "team_id": 201
+        },
+        {
+            "name": "Mohamed Salah",
+            "age": 31,
+            "number": 11,
+            "nationality": "Egypt",
+            "position": "Forward",
+            "team_id": 102
+        },
+        {
+            "name": "Dusan Vlahovic",
+            "age": 24,
+            "number": 9,
+            "nationality": "Serbia",
+            "position": "Forward",
+            "team_id": 301
+        }
+    ]
+}
